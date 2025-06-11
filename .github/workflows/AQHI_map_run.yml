@@ -26,7 +26,7 @@ jobs:
             matplotlib \
             requests
       - name: Run preprocessing
-        run: python AQHI_map.py
+        run: python aqhi_map.py
       - name: Commit & push
         run: |
           git config user.name "GitHub Actions"
