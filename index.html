@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>IDW Grid in Leaflet</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
+  <style>
+    #map { height: 100vh; }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+
+  <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+  <script>
+
+    // Initialize the map
+    var map = L.map('map').setView([53.5, -113.5], 8); // Adjust center and zoom
+
+    // Add base layer
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 18,
+    }).addTo(map);
+
+    // Color function
+    function getColor(d) {
+      return d > 80 ? '#800026' :
+             d > 60 ? '#BD0026' :
+             d > 40 ? '#E31A1C' :
+             d > 20 ? '#FC4E2A' :
+             d > 10 ? '#FD8D3C' :
+             d > 5  ? '#FEB24C' :
+             d > 0  ? '#FED976' :
+                      '#FFEDA0';
+    }
+
+    function style(feature) {
+      return {
+        fillColor: getColor(feature.properties.value),
+        weight: 0.5,
+        opacity: 1,
+        color: 'white',
+        dashArray: '3',
+        fillOpacity: 0.7
+      };
+    }
+
+    // Load GeoJSON from GitHub
+    fetch("https://raw.githubusercontent.com/your-username/your-repo/main/interpolated_grid.geojson")
+      .then(response => response.json())
+      .then(data => {
+        L.geoJson(data, {
+          style: style,
+          onEachFeature: function (feature, layer) {
+            layer.bindPopup("Value: " + feature.properties.value.toFixed(2));
+          }
+        }).addTo(map);
+      });
+
+  </script>
+</body>
+</html>
