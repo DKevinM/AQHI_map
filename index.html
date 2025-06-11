@@ -47,7 +47,7 @@
     }
 
     // Load GeoJSON from GitHub
-    fetch("https://raw.githubusercontent.com/your-username/your-repo/main/interpolated_grid.geojson")
+    fetch("interpolated_grid.geojson")
       .then(response => response.json())
       .then(data => {
         L.geoJson(data, {
