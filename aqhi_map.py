@@ -10,7 +10,7 @@ from io import StringIO
 
 
 # 1. Load CSV data from GitHub (make sure it's raw URL)
-url = 'https://github.com/DKevinM/AB_datapull/tree/main/data/last6h.csv'
+url = 'https://raw.github.com/DKevinM/AB_datapull/main/data/last6h.csv'
 response = requests.get(url)
 df = pd.read_csv(StringIO(response.text))
 df = df[df["ParameterName"].isna() | (df["ParameterName"] == "")]
