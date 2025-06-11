@@ -22,13 +22,15 @@ jobs:
             geopandas \
             scipy \
             numpy \
-            shapely 
+            shapely \
+            matplotlib \
+            requests
       - name: Run preprocessing
         run: python AQHI_map.py
       - name: Commit & push
         run: |
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
-          git add AQHI_map.geojson
+          git add interpolated_grid.geojson
           git commit -m "Update AQHI map grid (GeoJSON)"
           git push
