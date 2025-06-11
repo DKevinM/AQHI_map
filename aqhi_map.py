@@ -45,7 +45,7 @@ def idw(xy, values, grid_xy, power=2):
     return interp_values
 
 xy = np.array(list(zip(gdf.geometry.x, gdf.geometry.y)))
-values = gdf['value_column'].values  # replace with actual column
+values = gdf['Value'].values  # replace with actual column
 grid_values = idw(xy, values, grid_points)
 
 # 5. Convert grid points to polygons
