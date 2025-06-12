@@ -53,7 +53,7 @@ function style(feature) {
 }
 
     // Load GeoJSON from GitHub
-    fetch("interpolated_grid.geojson")
+    fetch("./interpolated_grid.geojson") 
       .then(response => response.json())
       .then(data => {
         L.geoJson(data, {
