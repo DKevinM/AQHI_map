@@ -66,7 +66,7 @@ grid_gdf = gpd.GeoDataFrame({'value': vals}, geometry=polygons, crs="EPSG:4326")
 
 
 # 6. Load Alberta shapefile
-alberta = gpd.read_file("alberta.shp").to_crs("EPSG:4326")
+alberta = gpd.read_file("./alberta.shp").to_crs("EPSG:4326")
 
 # Optional: simplify the Alberta shape if very complex (for speed)
 # alberta = alberta.simplify(0.01, preserve_topology=True)
