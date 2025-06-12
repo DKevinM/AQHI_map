@@ -64,5 +64,40 @@ for i in range(len(grid_points)):
 
 grid_gdf = gpd.GeoDataFrame({'value': vals}, geometry=polygons, crs=gdf.crs)
 
-# 6. Save or visualize
-grid_gdf.to_file("interpolated_grid.geojson", driver='GeoJSON')
+def get_aqhi_color(val):
+    if isinstance(val, str) and val.strip() == "10+":
+        return "#640100"
+    try:
+        v = float(val)
+        if np.isnan(v) or v < 1:
+            return "#D3D3D3"
+        elif v == 1:
+            return "#01cbff"
+        elif v == 2:
+            return "#0099cb"
+        elif v == 3:
+            return "#016797"
+        elif v == 4:
+            return "#fffe03"
+        elif v == 5:
+            return "#ffcb00"
+        elif v == 6:
+            return "#ff9835"
+        elif v == 7:
+            return "#fd6866"
+        elif v == 8:
+            return "#fe0002"
+        elif v == 9:
+            return "#cc0001"
+        elif v == 10:
+            return "#9a0100"
+        else:
+            return "#640100"  # >10
+    except:
+        return "#D3D3D3"
+
+# Apply to interpolated values
+grid_gdf['hex_color'] = [get_aqhi_color(v) for v in grid_gdf['value']]
+
+
+grid_gdf[['value', 'hex_color', 'geometry']].to_file("interpolated_grid.geojson", driver='GeoJSON')
