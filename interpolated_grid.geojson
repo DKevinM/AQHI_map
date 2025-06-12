@@ -3,6 +3,6 @@
 "name": "interpolated_grid",
 "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
 "features": [
-{ "type": "Feature", "properties": { "aqhi_str": "6", "hex_color": "#ff9835" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ -119.3968, 49.46218 ], [ 4880.603199999999561, 49.46218 ], [ 4880.603199999999561, 5049.462180000000444 ], [ -119.3968, 5049.462180000000444 ], [ -119.3968, 49.46218 ] ] ] } }
+{ "type": "Feature", "properties": { "aqhi_str": "5", "hex_color": "#ffcb00" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ -119.3968, 49.46218 ], [ 4880.603199999999561, 49.46218 ], [ 4880.603199999999561, 5049.462180000000444 ], [ -119.3968, 5049.462180000000444 ], [ -119.3968, 49.46218 ] ] ] } }
 ]
 }
