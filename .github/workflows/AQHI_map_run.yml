@@ -35,7 +35,7 @@ jobs:
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
           git add interpolated_grid.geojson
-          git commit -m "Update AQHI map grid (GeoJSON)"
+          git commit --allow-empty -m "Republish Pages to include GeoJSON"
           git push
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
