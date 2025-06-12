@@ -24,27 +24,33 @@
     }).addTo(map);
 
     // Color function
-    function getColor(d) {
-      return d > 7 ? '#800026' :
-             d > 6 ? '#BD0026' :
-             d > 5 ? '#E31A1C' :
-             d > 4 ? '#FC4E2A' :
-             d > 3 ? '#FD8D3C' :
-             d > 2  ? '#FEB24C' :
-             d > 1  ? '#FED976' :
-                      '#FFEDA0';
-    }
+function getColor(aqhi) {
+  switch (aqhi) {
+    case "1": return "#01cbff";
+    case "2": return "#0099cb";
+    case "3": return "#016797";
+    case "4": return "#fffe03";
+    case "5": return "#ffcb00";
+    case "6": return "#ff9835";
+    case "7": return "#fd6866";
+    case "8": return "#fe0002";
+    case "9": return "#cc0001";
+    case "10": return "#9a0100";
+    case "10+": return "#640100";
+    default: return "#D3D3D3";
+  }
+}
 
-    function style(feature) {
-      return {
-        fillColor: getColor(feature.properties.value),
-        weight: 0.5,
-        opacity: 1,
-        color: 'white',
-        dashArray: '3',
-        fillOpacity: 0.7
-      };
-    }
+function style(feature) {
+  return {
+    fillColor: getColor(feature.properties.aqhi_str),
+    weight: 0.5,
+    opacity: 1,
+    color: 'white',
+    dashArray: '3',
+    fillOpacity: 0.7
+  };
+}
 
     // Load GeoJSON from GitHub
     fetch("interpolated_grid.geojson")
@@ -53,7 +59,7 @@
         L.geoJson(data, {
           style: style,
           onEachFeature: function (feature, layer) {
-            layer.bindPopup("Value: " + feature.properties.value.toFixed(2));
+            layer.bindPopup("AQHI: " + feature.properties.aqhi_str);
           }
         }).addTo(map);
       });
