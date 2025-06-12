@@ -22,7 +22,7 @@ latest_df = df.sort_values("ReadingDate").groupby("StationName").tail(1)
 latest_df = latest_df.dropna(subset=["Value", "Latitude", "Longitude"])
 
 # 6. Load Alberta shapefile
-alberta = gpd.read_file("data/Alberta.shp").to_crs("EPSG:4326")
+alberta = gpd.read_file("data/Strathcona.shp").to_crs("EPSG:4326")
 
 
 # Filter points inside Alberta
@@ -33,7 +33,7 @@ gdf = gpd.overlay(gdf, alberta, how="intersection")  # <-- THIS
 # 3. Generate grid
 # Use Alberta shape for grid bounds
 xmin, ymin, xmax, ymax = alberta.total_bounds
-cellsize = 0.03  # degrees (~3 km)
+cellsize = 0.005  # degrees (~0.5 km)
 x = np.arange(xmin, xmax, cellsize)
 y = np.arange(ymin, ymax, cellsize)
 xx, yy = np.meshgrid(x, y)
