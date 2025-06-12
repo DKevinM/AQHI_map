@@ -23,7 +23,7 @@ latest_df = latest_df.dropna(subset=["Value", "Latitude", "Longitude"])
 
 # 2. Convert to GeoDataFrame
 gdf = gpd.GeoDataFrame(latest_df, geometry=gpd.points_from_xy(latest_df.Longitude, latest_df.Latitude), crs='EPSG:4326')
-gdf = gdf.to_crs(epsg=3857)  # convert to metric
+# gdf = gdf.to_crs(epsg=3857)  # convert to metric
 
 # 3. Generate grid
 xmin, ymin, xmax, ymax = gdf.total_bounds
@@ -61,8 +61,8 @@ for i in range(len(grid_points)):
     ])
     polygons.append(poly)
     vals.append(grid_values[i])
-
-grid_gdf = gpd.GeoDataFrame({'value': vals}, geometry=polygons, crs=gdf.crs)
+    
+grid_gdf = gpd.GeoDataFrame({'value': vals}, geometry=polygons, crs="EPSG:4326")
 
 def get_aqhi_color(val):
     if isinstance(val, str) and val.strip() == "10+":
