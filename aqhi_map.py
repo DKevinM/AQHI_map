@@ -21,13 +21,19 @@ latest_df = df.sort_values("ReadingDate").groupby("StationName").tail(1)
 # Drop rows with missing info
 latest_df = latest_df.dropna(subset=["Value", "Latitude", "Longitude"])
 
-# 2. Convert to GeoDataFrame
+# 6. Load Alberta shapefile
+alberta = gpd.read_file("data/Alberta.shp").to_crs("EPSG:4326")
+
+
+# Filter points inside Alberta
 gdf = gpd.GeoDataFrame(latest_df, geometry=gpd.points_from_xy(latest_df.Longitude, latest_df.Latitude), crs='EPSG:4326')
-# gdf = gdf.to_crs(epsg=3857)  # convert to metric
+gdf = gpd.overlay(gdf, alberta, how="intersection")  # <-- THIS
+
 
 # 3. Generate grid
-xmin, ymin, xmax, ymax = gdf.total_bounds
-cellsize = 5000  # in meters
+# Use Alberta shape for grid bounds
+xmin, ymin, xmax, ymax = alberta.total_bounds
+cellsize = 0.05  # degrees (~5 km)
 x = np.arange(xmin, xmax, cellsize)
 y = np.arange(ymin, ymax, cellsize)
 xx, yy = np.meshgrid(x, y)
@@ -64,18 +70,7 @@ for i in range(len(grid_points)):
     
 grid_gdf = gpd.GeoDataFrame({'value': vals}, geometry=polygons, crs="EPSG:4326")
 
-
-# 6. Load Alberta shapefile
-alberta = gpd.read_file("data/Alberta.shp").to_crs("EPSG:4326")
-
-# Optional: simplify the Alberta shape if very complex (for speed)
-# alberta = alberta.simplify(0.01, preserve_topology=True)
-
-# 7. Clip the grid to Alberta boundary
-clipped_grid = gpd.overlay(grid_gdf, alberta, how="intersection")
-
-# 8. Export to GeoJSON
-clipped_grid.to_file("interpolated_grid.geojson", driver="GeoJSON")
+grid_gdf = gpd.overlay(grid_gdf, alberta, how="intersection")
 
 
 def get_aqhi_color(val):
@@ -118,8 +113,8 @@ def validate_aqhi(val):
         return "10+"
     else:
         return str(int(round(val)))
-
-grid_gdf['aqhi_str'] = [validate_aqhi(v) for v in grid_gdf['value']]
-grid_gdf['hex_color'] = [get_aqhi_color(v) for v in grid_gdf['aqhi_str']]
+        
+grid_gdf['aqhi_str'] = grid_gdf['value'].apply(validate_aqhi)
+grid_gdf['hex_color'] = grid_gdf['aqhi_str'].apply(get_aqhi_color)
 
 grid_gdf[['aqhi_str', 'hex_color', 'geometry']].to_file("interpolated_grid.geojson", driver="GeoJSON")
