@@ -33,7 +33,7 @@ gdf = gpd.overlay(gdf, alberta, how="intersection")  # <-- THIS
 # 3. Generate grid
 # Use Alberta shape for grid bounds
 xmin, ymin, xmax, ymax = alberta.total_bounds
-cellsize = 0.02  # degrees (~2 km)
+cellsize = 0.03  # degrees (~3 km)
 x = np.arange(xmin, xmax, cellsize)
 y = np.arange(ymin, ymax, cellsize)
 xx, yy = np.meshgrid(x, y)
