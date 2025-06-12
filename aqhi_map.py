@@ -96,8 +96,16 @@ def get_aqhi_color(val):
     except:
         return "#D3D3D3"
 
-# Apply to interpolated values
-grid_gdf['hex_color'] = [get_aqhi_color(v) for v in grid_gdf['value']]
 
+def validate_aqhi(val):
+    if np.isnan(val) or val < 1:
+        return "NA"
+    elif val > 10:
+        return "10+"
+    else:
+        return str(int(round(val)))
 
-grid_gdf[['value', 'hex_color', 'geometry']].to_file("interpolated_grid.geojson", driver='GeoJSON')
+grid_gdf['aqhi_str'] = [validate_aqhi(v) for v in grid_gdf['value']]
+grid_gdf['hex_color'] = [get_aqhi_color(v) for v in grid_gdf['aqhi_str']]
+
+grid_gdf[['aqhi_str', 'hex_color', 'geometry']].to_file("interpolated_grid.geojson", driver="GeoJSON")
